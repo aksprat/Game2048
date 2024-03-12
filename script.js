@@ -1,41 +1,16 @@
-$(document).ready(function() {
-    function renderBoard(board) {
-        // Write code to render the game board based on the data received from the server
-    }
+// Assuming `board` is a 2D array representing the game board
+function renderBoard(board) {
+    var boardContainer = document.getElementById('board-container');
+    boardContainer.innerHTML = ''; // Clear the board container
 
-    function move(direction) {
-        $.ajax({
-            type: 'POST',
-            url: '/move',
-            data: {direction: direction},
-            success: function(response) {
-                renderBoard(response);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    }
-
-    $(document).keydown(function(e) {
-        switch(e.which) {
-            case 37: // Left arrow key
-                move('left');
-                break;
-            case 38: // Up arrow key
-                move('up');
-                break;
-            case 39: // Right arrow key
-                move('right');
-                break;
-            case 40: // Down arrow key
-                move('down');
-                break;
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[i].length; j++) {
+            var tileValue = board[i][j];
+            var tileClass = 'tile tile-' + tileValue;
+            var tile = document.createElement('div');
+            tile.className = tileClass;
+            tile.textContent = tileValue !== 0 ? tileValue : '';
+            boardContainer.appendChild(tile);
         }
-    });
-
-    // Initial rendering of the game board
-    $.get('/', function(response) {
-        renderBoard(response);
-    });
-});
+    }
+}
